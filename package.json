@@ -37,7 +37,7 @@
   "devDependencies": {
     "@jest/globals": "^29.6.0",
     "@relaycorp/eslint-config": "^1.1.120",
-    "@relaycorp/shared-config": "^1.10.0",
+    "@relaycorp/shared-config": "^1.10.1",
     "@types/jest": "^29.5.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.45.0",
@@ -55,5 +55,8 @@
   "eslintConfig": {
     "extends": "@relaycorp"
   },
-  "prettier": "@relaycorp/shared-config/.prettierrc.json"
+  "prettier": "@relaycorp/shared-config/.prettierrc.json",
+  "release": {
+    "extends": "@relaycorp/shared-config"
+  }
 }
