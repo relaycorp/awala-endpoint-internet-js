@@ -61,5 +61,9 @@
       "main"
     ],
     "extends": "@relaycorp/shared-config"
+  },
+  "dependencies": {
+    "cloudevents": "^8.0.0",
+    "date-fns": "^2.30.0"
   }
 }
