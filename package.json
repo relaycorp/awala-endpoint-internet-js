@@ -57,6 +57,7 @@
   },
   "prettier": "@relaycorp/shared-config/.prettierrc.json",
   "release": {
+    "branches": ["main"],
     "extends": "@relaycorp/shared-config"
   }
 }
