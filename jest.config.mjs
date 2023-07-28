@@ -19,30 +19,25 @@ export default {
   collectCoverage: false,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ["src/lib/**/*.ts"],
+  collectCoverageFrom: ['src/lib/**/*.ts'],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "coverage",
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: [
-    "_test_utils\.[tj]s",
-  ],
+  coveragePathIgnorePatterns: ['_test_utils.[tj]s'],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: [
-    "text",
-    "lcov",
-  ],
+  coverageReporters: ['text', 'lcov'],
 
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
-    "global": {
-      "branches": 100,
-      "functions": 100,
-      "lines": 100,
-      "statements": 100
-    }
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100,
+    },
   },
 
   // A path to a custom dependency extractor
@@ -69,7 +64,7 @@ export default {
   // ],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: ["js", "ts"],
+  moduleFileExtensions: ['js', 'ts'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
@@ -86,7 +81,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: "ts-jest/presets/default-esm",
+  preset: 'ts-jest/presets/default-esm',
 
   // Run tests from one or more projects
   // projects: null,
@@ -119,13 +114,13 @@ export default {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ["jest-extended/all"],
+  setupFilesAfterEnv: ['jest-extended/all'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "node",
+  testEnvironment: 'node',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -140,9 +135,7 @@ export default {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: [
-    "/node_modules/",
-  ],
+  testPathIgnorePatterns: ['/node_modules/'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -161,10 +154,7 @@ export default {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.tsx?$': [
-      'ts-jest',
-      { useESM: true },
-    ],
+    '^.+\\.tsx?$': ['ts-jest', { useESM: true }],
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
