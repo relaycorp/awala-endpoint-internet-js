@@ -34,7 +34,7 @@ export function makeIncomingServiceMessage(event: CloudEventV1<Buffer>): Incomin
   };
 }
 
-export function makeOutgoingServiceMessage(options: OutgoingServiceMessage): CloudEvent<Buffer> {
+export function makeOutgoingCloudEvent(options: OutgoingServiceMessage): CloudEvent<Buffer> {
   const expiry = options.expiry ?? addMonths(new Date(), OUTGOING_MESSAGE_TTL_MONTHS);
   return new CloudEvent({
     type: OUTGOING_SERVICE_MESSAGE_TYPE,

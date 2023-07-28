@@ -3,7 +3,7 @@ import { addMonths, parseISO } from 'date-fns';
 
 import { CE_CONTENT_TYPE, CE_DATA, CE_ID, CE_SOURCE } from '../testUtils/stubs.js';
 
-import { makeIncomingServiceMessage, makeOutgoingServiceMessage } from './converter.js';
+import { makeIncomingServiceMessage, makeOutgoingCloudEvent } from './converters.js';
 import type { OutgoingServiceMessage } from './messages.js';
 
 describe('makeIncomingServiceMessage', () => {
@@ -80,7 +80,7 @@ describe('makeIncomingServiceMessage', () => {
   });
 });
 
-describe('makeOutgoingServiceMessage', () => {
+describe('makeOutgoingCloudEvent', () => {
   const message: OutgoingServiceMessage = {
     parcelId: 'parcel',
     senderId: 'sender',
@@ -90,20 +90,20 @@ describe('makeOutgoingServiceMessage', () => {
   };
 
   test('Event type should be that of an outgoing service message', () => {
-    const event = makeOutgoingServiceMessage(message);
+    const event = makeOutgoingCloudEvent(message);
 
     expect(event.type).toBe('tech.relaycorp.awala.endpoint-internet.outgoing-service-message');
   });
 
   describe('Event id', () => {
     test('Should be taken from service message if set', () => {
-      const event = makeOutgoingServiceMessage(message);
+      const event = makeOutgoingCloudEvent(message);
 
       expect(event.id).toBe(message.parcelId);
     });
 
     test('Should be generated if not set', () => {
-      const event = makeOutgoingServiceMessage({ ...message, parcelId: undefined });
+      const event = makeOutgoingCloudEvent({ ...message, parcelId: undefined });
 
       expect(event.id).toMatch(/[\da-f-]{36}/u);
     });
@@ -113,7 +113,7 @@ describe('makeOutgoingServiceMessage', () => {
     test('Should be taken from service message if set', () => {
       const expiry = new Date();
 
-      const event = makeOutgoingServiceMessage({ ...message, expiry });
+      const event = makeOutgoingCloudEvent({ ...message, expiry });
 
       expect(parseISO(event.expiry as string)).toMatchObject(expiry);
     });
@@ -121,7 +121,7 @@ describe('makeOutgoingServiceMessage', () => {
     test('Should default to 3 months from now if not set', () => {
       const beforeDate = new Date();
 
-      const event = makeOutgoingServiceMessage({ ...message, expiry: undefined });
+      const event = makeOutgoingCloudEvent({ ...message, expiry: undefined });
 
       const afterDate = new Date();
       const expiry = parseISO(event.expiry as string);
@@ -131,25 +131,25 @@ describe('makeOutgoingServiceMessage', () => {
   });
 
   test('Event should should be the message sender id', () => {
-    const event = makeOutgoingServiceMessage(message);
+    const event = makeOutgoingCloudEvent(message);
 
     expect(event.source).toBe(message.senderId);
   });
 
   test('Event subject should be the message recipient id', () => {
-    const event = makeOutgoingServiceMessage(message);
+    const event = makeOutgoingCloudEvent(message);
 
     expect(event.subject).toBe(message.recipientId);
   });
 
   test('Event data content type should be the message content type', () => {
-    const event = makeOutgoingServiceMessage(message);
+    const event = makeOutgoingCloudEvent(message);
 
     expect(event.datacontenttype).toBe(message.contentType);
   });
 
   test('Event data should be the message content', () => {
-    const event = makeOutgoingServiceMessage(message);
+    const event = makeOutgoingCloudEvent(message);
 
     expect(event.data).toBe(message.content);
   });
