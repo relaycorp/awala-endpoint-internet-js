@@ -21,8 +21,8 @@
     "google-pubsub"
   ],
   "scripts": {
-    "build": "run-s clean && run-p build:main",
-    "build:main": "tsc -p tsconfig.json",
+    "build": "run-s clean tsc",
+    "tsc": "tsc",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier . --write",
     "fix:eslint": "eslint --fix src",
@@ -32,12 +32,12 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "test:integration": "exit 0",
     "doc-api": "typedoc src/index.ts --out build/docs",
-    "clean": "del-cli build test"
+    "clean": "del-cli build"
   },
   "devDependencies": {
     "@jest/globals": "^29.6.0",
     "@relaycorp/eslint-config": "^1.1.120",
-    "@relaycorp/shared-config": "^1.10.1",
+    "@relaycorp/shared-config": "^1.11.4",
     "@types/jest": "^29.5.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.45.0",
@@ -57,7 +57,9 @@
   },
   "prettier": "@relaycorp/shared-config/.prettierrc.json",
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "extends": "@relaycorp/shared-config"
   }
 }
