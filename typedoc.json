@@ -1,6 +1,5 @@
 {
-  "exclude": ["**/*.spec.ts"],
-  "excludePrivate": true,
-  "excludeProtected": true,
-  "theme": "minimal"
+  "extends": ["@relaycorp/shared-config/libs/typedoc.json"],
+  "entryPoints": ["src/index.ts"],
+  "out": "build/docs"
 }
