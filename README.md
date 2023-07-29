@@ -46,7 +46,7 @@ For example:
 import { makeOutgoingCloudEvent, OutgoingServiceMessage } from '@relaycorp/awala-endpoint-internet';
 
 const outgoingServiceMessage: OutgoingServiceMessage = {
-  recipientId: '<Insert Awala Endpoint Id of recipient>',
+  recipientId: '<Insert Awala endpoint id of recipient>',
   contentType: 'application/vnd.your-company.your-service.Greeting',
   data: Buffer.from('Hello, world!'),
 };
