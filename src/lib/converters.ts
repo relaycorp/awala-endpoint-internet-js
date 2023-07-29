@@ -12,6 +12,8 @@ const OUTGOING_SERVICE_MESSAGE_TYPE =
 
 const OUTGOING_MESSAGE_TTL_MONTHS = 3;
 
+const DEFAULT_SENDER_ID_KEYWORD = 'default';
+
 export function makeIncomingServiceMessage(event: CloudEventV1<Buffer>): IncomingServiceMessage {
   if (event.type !== INCOMING_SERVICE_MESSAGE_TYPE) {
     throw new Error('Invalid event type');
@@ -47,7 +49,7 @@ export function makeOutgoingCloudEvent(options: OutgoingServiceMessage): CloudEv
     id: options.parcelId ?? randomUUID(),
     time: creationDate.toISOString(),
     expiry: expiry.toISOString(),
-    source: options.senderId,
+    source: options.senderId ?? DEFAULT_SENDER_ID_KEYWORD,
     subject: options.recipientId,
     datacontenttype: options.contentType,
     data: options.content,

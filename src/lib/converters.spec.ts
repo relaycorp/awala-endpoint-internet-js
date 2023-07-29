@@ -184,10 +184,18 @@ describe('makeOutgoingCloudEvent', () => {
     });
   });
 
-  test('Event should should be the message sender id', () => {
-    const event = makeOutgoingCloudEvent(message);
+  describe('Source', () => {
+    test('Should be the message sender id if set', () => {
+      const event = makeOutgoingCloudEvent(message);
 
-    expect(event.source).toBe(message.senderId);
+      expect(event.source).toBe(message.senderId);
+    });
+
+    test('Should be the constant "default" if the sender endpoint id if not set', () => {
+      const event = makeOutgoingCloudEvent({ ...message, senderId: undefined });
+
+      expect(event.source).toBe('default');
+    });
   });
 
   test('Event subject should be the message recipient id', () => {

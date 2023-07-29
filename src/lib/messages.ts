@@ -1,11 +1,11 @@
 interface ServiceMessageBase {
-  readonly senderId: string;
   readonly recipientId: string;
   readonly contentType: string;
   readonly content: Buffer;
 }
 
 interface ServiceMessageExtra {
+  readonly senderId: string;
   readonly parcelId: string;
   readonly creationDate: Date;
   readonly expiryDate: Date;
