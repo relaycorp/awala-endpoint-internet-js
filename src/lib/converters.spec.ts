@@ -1,5 +1,5 @@
 import { CloudEvent } from 'cloudevents';
-import { addMonths, parseISO } from 'date-fns';
+import { addMonths, parseISO, setMilliseconds, subSeconds } from 'date-fns';
 
 import { CE_CONTENT_TYPE, CE_DATA, CE_ID, CE_SOURCE } from '../testUtils/stubs.js';
 
@@ -12,6 +12,8 @@ describe('makeIncomingServiceMessage', () => {
     type: 'tech.relaycorp.awala.endpoint-internet.incoming-service-message',
     source: CE_SOURCE,
     subject: 'recipient',
+    time: setMilliseconds(new Date(), 0).toISOString(),
+    expiry: setMilliseconds(addMonths(new Date(), 1), 0).toISOString(),
     datacontenttype: CE_CONTENT_TYPE,
     data: CE_DATA,
   });
@@ -32,6 +34,28 @@ describe('makeIncomingServiceMessage', () => {
     const message = makeIncomingServiceMessage(event);
 
     expect(message.parcelId).toBe(event.id);
+  });
+
+  test('Creation date should be taken from event time', () => {
+    const message = makeIncomingServiceMessage(event);
+
+    const eventTime = parseISO(event.time!);
+    expect(message.creationDate).toStrictEqual(eventTime);
+  });
+
+  describe('Expiry date', () => {
+    test('Should be taken from event expiry', () => {
+      const message = makeIncomingServiceMessage(event);
+
+      const eventExpiry = parseISO(event.expiry as string);
+      expect(message.expiryDate).toStrictEqual(eventExpiry);
+    });
+
+    test('Event should be refused if expiry is not set', () => {
+      const invalidEvent = event.cloneWith({ expiry: undefined }, false);
+
+      expect(() => makeIncomingServiceMessage(invalidEvent)).toThrow('Missing event expiry');
+    });
   });
 
   describe('Recipient', () => {
@@ -109,11 +133,32 @@ describe('makeOutgoingCloudEvent', () => {
     });
   });
 
+  describe('Creation date', () => {
+    test('Should be taken from service message if set', () => {
+      const creationDate = subSeconds(new Date(), 30);
+
+      const event = makeOutgoingCloudEvent({ ...message, creationDate });
+
+      expect(parseISO(event.time!)).toMatchObject(creationDate);
+    });
+
+    test('Should default to now if not set', () => {
+      const beforeDate = new Date();
+
+      const event = makeOutgoingCloudEvent({ ...message, creationDate: undefined });
+
+      const afterDate = new Date();
+      const creationDate = parseISO(event.time!);
+      expect(creationDate).toBeAfterOrEqualTo(beforeDate);
+      expect(creationDate).toBeBeforeOrEqualTo(afterDate);
+    });
+  });
+
   describe('Expiry', () => {
     test('Should be taken from service message if set', () => {
       const expiry = new Date();
 
-      const event = makeOutgoingCloudEvent({ ...message, expiry });
+      const event = makeOutgoingCloudEvent({ ...message, expiryDate: expiry });
 
       expect(parseISO(event.expiry as string)).toMatchObject(expiry);
     });
@@ -121,7 +166,7 @@ describe('makeOutgoingCloudEvent', () => {
     test('Should default to 3 months from now if not set', () => {
       const beforeDate = new Date();
 
-      const event = makeOutgoingCloudEvent({ ...message, expiry: undefined });
+      const event = makeOutgoingCloudEvent({ ...message, expiryDate: undefined });
 
       const afterDate = new Date();
       const expiry = parseISO(event.expiry as string);
