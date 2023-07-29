@@ -14,6 +14,11 @@ const OUTGOING_MESSAGE_TTL_MONTHS = 3;
 
 const DEFAULT_SENDER_ID_KEYWORD = 'default';
 
+/**
+ * Convert an incoming `CloudEvent` to an incoming service message.
+ * @param event The incoming `CloudEvent`.
+ * @returns The incoming service message.
+ */
 export function makeIncomingServiceMessage(event: CloudEventV1<Buffer>): IncomingServiceMessage {
   if (event.type !== INCOMING_SERVICE_MESSAGE_TYPE) {
     throw new Error('Invalid event type');
@@ -41,17 +46,22 @@ export function makeIncomingServiceMessage(event: CloudEventV1<Buffer>): Incomin
   };
 }
 
-export function makeOutgoingCloudEvent(options: OutgoingServiceMessage): CloudEvent<Buffer> {
-  const creationDate = options.creationDate ?? new Date();
-  const expiry = options.expiryDate ?? addMonths(creationDate, OUTGOING_MESSAGE_TTL_MONTHS);
+/**
+ * Convert an outgoing service message to a `CloudEvent`.
+ * @param message The outgoing service message.
+ * @returns The equivalent `CloudEvent`.
+ */
+export function makeOutgoingCloudEvent(message: OutgoingServiceMessage): CloudEvent<Buffer> {
+  const creationDate = message.creationDate ?? new Date();
+  const expiry = message.expiryDate ?? addMonths(creationDate, OUTGOING_MESSAGE_TTL_MONTHS);
   return new CloudEvent({
     type: OUTGOING_SERVICE_MESSAGE_TYPE,
-    id: options.parcelId ?? randomUUID(),
+    id: message.parcelId ?? randomUUID(),
     time: creationDate.toISOString(),
     expiry: expiry.toISOString(),
-    source: options.senderId ?? DEFAULT_SENDER_ID_KEYWORD,
-    subject: options.recipientId,
-    datacontenttype: options.contentType,
-    data: options.content,
+    source: message.senderId ?? DEFAULT_SENDER_ID_KEYWORD,
+    subject: message.recipientId,
+    datacontenttype: message.contentType,
+    data: message.content,
   });
 }
