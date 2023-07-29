@@ -163,7 +163,16 @@ describe('makeOutgoingCloudEvent', () => {
       expect(parseISO(event.expiry as string)).toMatchObject(expiry);
     });
 
-    test('Should default to 3 months from now if not set', () => {
+    test('Should default to 3 months from creation date', () => {
+      const creationDate = subSeconds(new Date(), 30);
+
+      const event = makeOutgoingCloudEvent({ ...message, creationDate, expiryDate: undefined });
+
+      const expiry = parseISO(event.expiry as string);
+      expect(expiry).toStrictEqual(addMonths(creationDate, 3));
+    });
+
+    test('Should default to 3 months from now if creation date is not set either', () => {
       const beforeDate = new Date();
 
       const event = makeOutgoingCloudEvent({ ...message, expiryDate: undefined });

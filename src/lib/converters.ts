@@ -40,12 +40,12 @@ export function makeIncomingServiceMessage(event: CloudEventV1<Buffer>): Incomin
 }
 
 export function makeOutgoingCloudEvent(options: OutgoingServiceMessage): CloudEvent<Buffer> {
-  const time = options.creationDate ? options.creationDate.toISOString() : undefined;
-  const expiry = options.expiryDate ?? addMonths(new Date(), OUTGOING_MESSAGE_TTL_MONTHS);
+  const creationDate = options.creationDate ?? new Date();
+  const expiry = options.expiryDate ?? addMonths(creationDate, OUTGOING_MESSAGE_TTL_MONTHS);
   return new CloudEvent({
     type: OUTGOING_SERVICE_MESSAGE_TYPE,
     id: options.parcelId ?? randomUUID(),
-    time,
+    time: creationDate.toISOString(),
     expiry: expiry.toISOString(),
     source: options.senderId,
     subject: options.recipientId,
