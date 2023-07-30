@@ -4,11 +4,7 @@ import { CloudEvent, type CloudEventV1 } from 'cloudevents';
 import { addMonths, parseISO } from 'date-fns';
 
 import type { IncomingServiceMessage, OutgoingServiceMessage } from './messages.js';
-
-const INCOMING_SERVICE_MESSAGE_TYPE =
-  'tech.relaycorp.awala.endpoint-internet.incoming-service-message';
-const OUTGOING_SERVICE_MESSAGE_TYPE =
-  'tech.relaycorp.awala.endpoint-internet.outgoing-service-message';
+import { INCOMING_SERVICE_MESSAGE_TYPE, OUTGOING_SERVICE_MESSAGE_TYPE } from './eventTypes.js';
 
 const OUTGOING_MESSAGE_TTL_MONTHS = 3;
 
