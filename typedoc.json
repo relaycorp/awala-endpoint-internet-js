@@ -1,5 +1,5 @@
 {
-  "extends": ["@relaycorp/shared-config/libs/typedoc.json"],
+  "extends": ["@relaycorp/shared-config/typedoc.json"],
   "entryPoints": ["src/index.ts"],
   "out": "build/docs"
 }
