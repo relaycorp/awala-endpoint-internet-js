@@ -47,7 +47,7 @@
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typedoc": "^0.25.4",
-    "typescript": "^5.0.4"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "cloudevents": ">= 8.0.0, < 9.0.0",
